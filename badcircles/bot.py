@@ -2,7 +2,7 @@ from vkbottle.bot import Bot, Message
 from vkbottle.dispatch.rules.base import CommandRule, RegexRule
 from badcircles.settings import VK_TOKEN
 from typing import Tuple
-from badcircles.patterns import MemePatterns
+from badcircles.patterns import MemePatterns, ReplyPatterns
 from enum import Enum
 
 import re
@@ -16,12 +16,21 @@ async def patterncheck(message: Message, *patterns: Enum):
     заданным наборам паттернов.
     """
 
+    fragments = []
+    answer = ""
+    stripped_text = message.text.replace("\n", "")
+
     for patternset in patterns:
         for pattern in patternset:
             for regex in pattern.value[0]:
                 compiled = re.compile(regex, re.IGNORECASE)
-                if compiled.match(message.text):
-                    await message.answer(pattern.value[1])
+                if compiled.match(stripped_text):
+                    fragments.append(pattern.value[1])
+
+    if fragments:
+        for item in fragments:
+            answer += item + "\n"
+        await message.reply(answer)
 
 
 @bot.on.message(CommandRule("test", ["!", "/"], 1))
@@ -33,17 +42,17 @@ async def test_handler(message: Message, args: Tuple[str, int]):
     answer = args[0]
 
     await patterncheck(message, MemePatterns)
-    await message.answer(answer)
+    await message.reply(answer)
 
 
-@bot.on.message(RegexRule("^.*$"))
+@bot.on.message()
 async def any_message(message: Message):
     """
     Ловит любые сообщения, не попадающие
     под остальные хендлеры.
     """
 
-    await patterncheck(message, MemePatterns)
+    await patterncheck(message, MemePatterns, ReplyPatterns)
 
 
 def start():
