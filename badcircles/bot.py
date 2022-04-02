@@ -1,8 +1,8 @@
 from vkbottle.bot import Bot, Message
-from vkbottle.dispatch.rules.base import CommandRule, RegexRule
+from vkbottle.dispatch.rules.base import CommandRule
 from badcircles.settings import VK_TOKEN
 from typing import Tuple
-from badcircles.patterns import MemePatterns, ReplyPatterns
+from badcircles.patterns import GreetingPatterns, MemePatterns, ReplyPatterns
 from enum import Enum
 
 import re
@@ -52,7 +52,7 @@ async def any_message(message: Message):
     под остальные хендлеры.
     """
 
-    await patterncheck(message, MemePatterns, ReplyPatterns)
+    await patterncheck(message, MemePatterns, ReplyPatterns, GreetingPatterns)
 
 
 def start():
