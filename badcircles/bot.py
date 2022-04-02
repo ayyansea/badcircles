@@ -4,6 +4,7 @@ from badcircles.settings import VK_TOKEN
 from typing import Tuple
 from badcircles.patterns import GreetingPatterns, MemePatterns, ReplyPatterns
 from enum import Enum
+from badcircles.osu.stats import *
 
 import re
 
@@ -42,6 +43,22 @@ async def test_handler(message: Message, args: Tuple[str, int]):
     answer = args[0]
 
     await patterncheck(message, MemePatterns)
+    await message.reply(answer)
+
+
+@bot.on.message(text = "stats <user>")
+async def stats(message: Message, user = None):
+    """
+    Выдать информацию об игроке.
+    """
+    
+    if not user:
+        await message.reply("юзер не введен")
+
+    requested_user = get_user(user)
+    requested_stats = get_stats(requested_user)
+    answer = format_stats(requested_stats)
+
     await message.reply(answer)
 
 
