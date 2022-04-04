@@ -2,7 +2,7 @@ from ossapi import User
 from .osuapi import api
 
 
-def get_user(id: int):
+def get_user(id):
     """
     Получить объект юзера.
     """
@@ -29,6 +29,10 @@ def get_stats(user: User):
 
     return stats
 
+
+def get_top_plays(id: int):
+    return api.user_scores(id, "best", limit = 10)
+    
 
 def format_stats(stats: dict):
     """
