@@ -1,7 +1,7 @@
 from vkbottle.bot import Bot, Message
 from vkbottle.dispatch.rules.base import CommandRule
 from badcircles.settings import VK_TOKEN
-from typing import Tuple
+from typing import Tuple, Optional
 from badcircles.patterns import GreetingPatterns, MemePatterns, ReplyPatterns
 from enum import Enum
 from badcircles.osu.stats import *
@@ -47,20 +47,19 @@ async def test_handler(message: Message, args: Tuple[str, int]):
 
 
 @bot.on.message(text = "stats <user>")
-async def stats(message: Message, user = None):
+async def stats(message: Message, user: Optional[str] = None):
     """
     Выдать информацию об игроке.
     """
     
-    if not user:
-        await message.reply("юзер не введен")
-
-    requested_user = get_user(user)
-    requested_stats = get_stats(requested_user)
-    answer = format_stats(requested_stats)
-
-    await message.reply(answer)
-
+    try:
+        requested_user = get_user(user)
+        requested_stats = get_stats(requested_user)
+        answer = format_stats(requested_stats)
+        await message.reply(answer)
+    except ValueError:
+        await message.reply("такого пользователя нет")
+    
 
 @bot.on.message()
 async def any_message(message: Message):
