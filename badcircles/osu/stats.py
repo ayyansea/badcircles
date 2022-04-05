@@ -24,15 +24,15 @@ def get_stats(user: User):
         "Место в стране": "#" + str(user.statistics.country_rank),
         "Плейкаунт": user.statistics.play_count,
         "Плейтайм": user.statistics.play_time,
-        "Максимальное комбо": str(user.statistics.maximum_combo) + "x" 
+        "Максимальное комбо": str(user.statistics.maximum_combo) + "x",
     }
 
     return stats
 
 
 def get_top_plays(id: int):
-    return api.user_scores(id, "best", limit = 10)
-    
+    return api.user_scores(id, "best", limit=10)
+
 
 def format_stats(stats: dict):
     """
@@ -45,4 +45,3 @@ def format_stats(stats: dict):
         info += f"> {stat}: {value}\n"
 
     return info[:-1]
-    
