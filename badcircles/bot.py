@@ -5,6 +5,8 @@ from typing import Tuple, Optional
 from badcircles.patterns import GreetingPatterns, MemePatterns, ReplyPatterns
 from enum import Enum
 from badcircles.osu.stats import *
+from badcircles.osu.analytics.accuracy import acc_Analyze
+from badcircles.osu.analytics.topplays import plays_Analyze
 
 import re
 
@@ -46,12 +48,12 @@ async def test_handler(message: Message, args: Tuple[str, int]):
     await message.reply(answer)
 
 
-@bot.on.message(text = "stats <user>")
+@bot.on.message(text="stats <user>")
 async def stats(message: Message, user: Optional[str] = None):
     """
     Выдать информацию об игроке.
     """
-    
+
     try:
         requested_user = get_user(user)
         requested_stats = get_stats(requested_user)
@@ -59,7 +61,26 @@ async def stats(message: Message, user: Optional[str] = None):
         await message.reply(answer)
     except ValueError:
         await message.reply("такого пользователя нет")
-    
+
+
+@bot.on.message(text="analyze <user>")
+async def analyze(message: Message, user: Optional[str] = None):
+    try:
+        requested_user = get_user(user)
+        requested_acc = requested_user.statistics.hit_accuracy
+        requested_userid = requested_user.id
+        requested_topplays = get_top_plays(requested_userid)
+
+        a_acc = str(acc_Analyze(requested_acc))
+        a_plays = str(plays_Analyze(requested_topplays))
+
+        answer = a_acc + "\n" + a_plays
+
+        await message.reply(answer)
+
+    except ValueError:
+        await message.reply("такого пользователя нет")
+
 
 @bot.on.message()
 async def any_message(message: Message):
