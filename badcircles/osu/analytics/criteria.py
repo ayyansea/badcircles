@@ -1,17 +1,13 @@
 from enum import Enum
 
 
-class RankingCriteria(Enum):
-    """
-    Rank = (Name, Score)
-    """
-
-    SS = ("SS", 6)
-    S = ("S", 5)
-    A = ("A", 4)
-    B = ("B", 3)
-    C = ("C", 2)
-    D = ("D", 1)
+class ScoreCriteria(Enum):
+    SS = 6
+    S = 5
+    A = 4
+    B = 3
+    C = 2
+    D = 1
 
 
 class AccCriteria(Enum):
@@ -19,12 +15,12 @@ class AccCriteria(Enum):
     Rank = (Lower, Upper)
     """
 
-    SS = (99, 100)
-    S = (98, 99)
-    A = (96, 98)
-    B = (94, 96)
-    C = (90, 94)
-    D = (1, 90)
+    SS = ("SS", (99, 100))
+    S = ("S", (98, 99))
+    A = ("A", (96, 98))
+    B = ("B", (94, 96))
+    C = ("C", (90, 94))
+    D = ("D", (1, 90))
 
 
 class LengthCriteria(Enum):

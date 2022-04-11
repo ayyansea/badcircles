@@ -1,28 +1,42 @@
 from typing import Tuple
-from .criteria import RankingCriteria
+from .criteria import ScoreCriteria
 
 
-def get_ranking(value):
-    for criteria in RankingCriteria:
-        number = criteria.value[1]
-        letter = criteria.name
+def get_ranking(value: float, criteria) -> str:
+    for level in criteria:
+        low = level.value[1][0]
+        high = level.value[1][1]
+        name = level.value[0]
 
-        if type(value) is float:
-            return get_ranking(int(value))
+        if value == high:
+            return name
 
-        if type(value) is int:
-            if value == number or value > number:
-                return (criteria.name, value)
-
-        if type(value) is str:
-            if value == letter:
-                return number
+        if value >= low and value < high:
+            return name
 
 
-def average_ranking(*rankings: Tuple):
+def get_score(value: str) -> int:
+    for level in ScoreCriteria:
+        letter = level.name
+        score = level.value
+
+        if value == letter:
+            return score
+
+
+def get_letter(value: float) -> str:
+    for level in ScoreCriteria:
+        letter = level.name
+        score = level.value
+
+        if value == score or value > score:
+            return letter
+
+
+def average_score(*scores: Tuple) -> float:
     average = 0
 
-    for ranking in rankings:
-        average += ranking[1]
+    for ranking in scores:
+        average += scores[1]
 
-    return get_ranking(average / len(rankings))
+    return average / len(scores)
