@@ -14,6 +14,12 @@ class Analysis:
         self.acc = self.analyze_acc(user.statistics.hit_accuracy)
         self.maxcombo = self.analyze_combo(user.statistics.maximum_combo)
         self.topplays = self.analyze_plays(stats.get_top_plays(user.id))
+
+        self.analysis = {
+            "Оценка акки": self.acc[0],
+            "Оценка плеев": self.topplays[0],
+            "Оценка максимального комбо": self.maxcombo[0]
+        }
     
     
     def analyze_acc(self, acc: float) -> Tuple:
@@ -56,10 +62,4 @@ class Analysis:
 
     def get_analysis(self):
         
-        analysis = ""
-        analysis += f"Акка: {self.acc[0]}" + "\n"
-        analysis += f"Комбо: {self.maxcombo[0]}" + "\n"
-        analysis += f"Топ плеи: {self.topplays[0]}" + "\n"
-        
-        return analysis
-        
+        return stats.format_stats(self.analysis)
