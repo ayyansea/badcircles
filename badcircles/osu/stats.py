@@ -42,6 +42,6 @@ def format_stats(stats: dict):
     info = ""
 
     for stat, value in stats.items():
-        info += f"> {stat}: {value}\n"
+        info += f"{stat}: {value}\n"
 
     return info[:-1]
